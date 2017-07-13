@@ -12,6 +12,9 @@ CRGB leds[NUM_LEDS];
 int arr [NUM_LEDS][3]; // 3=h,s,v
 int patterns [2][2]; // start,end
 
+//int flameBase = 3;
+//int flameFlicker = 4;
+
 char sequence[SEQUENCE_COUNT][SEQUENCE_PROPS][20] = {
   {"17", "NULL", "NULL", "43"},
   {"20", "NULL", "NULL", "0"}
@@ -86,6 +89,10 @@ void loop() {
   int sound;
   sound = analogRead(0);
   Serial.println(sound);
+  for (int i = 0; i < sound / 10; i++) {
+    Serial.print("x");
+  }
+  Serial.println("");
   sound = (sound / 100 );
   if (sound > ledCount) {
     sound = ledCount;
