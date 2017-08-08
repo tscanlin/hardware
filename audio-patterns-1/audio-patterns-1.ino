@@ -26,6 +26,8 @@ CRGB leds[NUM_LEDS]; // Define the array of leds
 
 CMSGEQ7<MSGEQ7_SMOOTH, pinReset, pinStrobe, pinAnalogLeft, pinAnalogRight> MSGEQ7;
 
+int hue = 0;
+
 void setup() {
   Serial.begin(115200);
 
@@ -40,8 +42,6 @@ void setup() {
 }
 
 void loop() {
-  int hue = 0;
-
   // Analyze without delay
   bool newReading = MSGEQ7.read(MSGEQ7_INTERVAL);
 
@@ -59,8 +59,6 @@ void loop() {
 
       Serial.println(val);
 
-  //    fill_solid(leds, val, color); // NUM_LEDS
-
       int startingLed = x * LEDS_STRIP;
       for (int i = startingLed; i < NUM_LEDS; i++) {
         int limit = val / 4;
@@ -69,10 +67,9 @@ void loop() {
         } else {
           leds[i] = CHSV(hue, 255, 0);
         }
-        hue++;
+        
       }
-
-
+      hue++;
     }
 
     // Update Leds
