@@ -1,15 +1,9 @@
 #include "FastLED.h"
 
-
-#define msg7RESET 8
-#define msg7Strobe 7
-#define msg7DCout 6
-#define LED_PIN 3
 #define NUM_LEDS 182
 #define LEDS_STRIP 26
-
 #define CLOCK_PIN 13
-#define LED_PINS 3
+#define LED_PIN 3
 #define DATA_PIN 3
 #define COLOR_ORDER GRB
 #define CHIPSET     WS2811 // WS2811 LPD8806
@@ -34,9 +28,9 @@ CMSGEQ7<MSGEQ7_SMOOTH, pinReset, pinStrobe, pinAnalogLeft, pinAnalogRight> MSGEQ
 
 void setup() {
   Serial.begin(115200);
-  
+
   // FastLED setup
-  FastLED.addLeds<CHIPSET, LED_PINS, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(CORRECTION);
+  FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection(CORRECTION);
   FastLED.setBrightness( BRIGHTNESS );
   FastLED.setDither(LED_DITHER);
   FastLED.show(); // needed to reset leds to zero
@@ -50,23 +44,23 @@ void loop() {
 
   // Analyze without delay
   bool newReading = MSGEQ7.read(MSGEQ7_INTERVAL);
-  
+
   // Led strip output
   if (newReading) {
     for (int x = 0; x < FREQ_COUNT; x++) {
       uint8_t val = MSGEQ7.get(x);
-      
+
       // Reduce noise
       val = mapNoise(val);
-  
+
       // Visualize leds to the beat
       CRGB color = CRGB::Blue;
       color.nscale8_video(val);
-      
+
       Serial.println(val);
-      
+
   //    fill_solid(leds, val, color); // NUM_LEDS
-  
+
       int startingLed = x * LEDS_STRIP;
       for (int i = startingLed; i < NUM_LEDS; i++) {
         int limit = val / 4;
@@ -78,9 +72,9 @@ void loop() {
         hue++;
       }
 
-     
+
     }
-    
+
     // Update Leds
     FastLED.show();
   }
