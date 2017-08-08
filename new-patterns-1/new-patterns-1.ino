@@ -1,6 +1,6 @@
 #include "FastLED.h"
 
-#define NUM_LEDS 26
+#define NUM_LEDS 182
 #define DATA_PIN 3
 
 #define SEQUENCE_COUNT 2
@@ -30,6 +30,7 @@ void setup() {
   static int hue = 0;
   static int saturation = 255;
   static int brightness = 50;
+  Serial.println(brightness);
   
   static int dindex = 0;
   
